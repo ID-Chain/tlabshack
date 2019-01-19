@@ -1,0 +1,22 @@
+#+TITLE: Running IEA-API along with Indy test pool
+
+* Requirements: docker, docker-compose, port 8000
+
+* Clone the repository at https://github.com/ID-Chain/IEA-API.git
+
+* Edit docker-compose.yaml to remove schemac image and associated dependency markers.
+  
+* Create a .env file by copying the contents of env-example file.
+
+* do `docker-compose up -d` to start the images for the first time.
+
+* Getting the genesis transaction ids
+** run `docker ps` to get the container id of the currently running idchain/test-pool image 
+** Execute `docker exec <containerId> bash -c 'cat "/home/indy/.indy-cli/networks/$IDC_POOL_NAME/pool_transactions_genesis"' > pool_transactions_genesis`, 
+   which puts the information about the genesis transaction onto a file in the project directory
+** run `docker-compose restart` to populate the latest values. Wait for a couple minutes and the API docs will be available at http://localhost:8000/api/docs
+
+* Rebuild the `api` container with `docker-compose rebuild api`. This step puts  
+  the new genesis_transaction onto the new container.
+  
+* Now launch everything with `docker-compose up -d`

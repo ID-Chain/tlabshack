@@ -1,0 +1,1521 @@
+{
+	"info": {
+		"_postman_id": "c450e91a-81cc-4347-aa23-78231f06e521",
+		"name": "IDChain",
+		"description": "IdentityChain API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Steward Setup",
+			"item": [
+				{
+					"name": "Create Steward User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"steward1\",\n  \"password\": \"test123test\",\n  \"wallet\": {\n    \"name\": \"steward-wallet\",\n    \"credentials\": { \"key\" : \"testkey\" },\n    \"seed\": \"000000000000000000000000Steward1\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"steward1\",\n\t\"password\": \"test123test\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Trust Anchor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{steward_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"did\": \"Gc3HWtzjBuaGyMkSHgomzx\",\n\t\"verkey\": \"9WH5c1CyVgwSFB2xbEDnX7t8BNfFfPx5FnyeHcFmWXqU\",\n\t\"role\": \"TRUST_ANCHOR\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nym",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"nym"
+							]
+						},
+						"description": "Write a DID and verkey on the ledger and assign TRUST_ANCHOR permissions. Only Stewards may onboard new trust anchors."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "issuer (government)",
+			"item": [
+				{
+					"name": "User and Wallet Management",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"government1\",\n  \"password\": \"test123test\",\n  \"wallet\": {\n    \"name\": \"govt-wallet\",\n    \"credentials\": { \"key\" : \"testkey\" },\n    \"seed\": \"0000000000000000000000Government\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"government1\",\n\t\"password\": \"test123test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Current Wallet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/wallet/default",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"wallet",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Onboard new user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"did\": \"NtZ8WnmcGp431FiAjAstw7\",\n    \"verkey\": \"Cvx6znPMe3GXLRjbdXgsvZotCkRcqGSfeVniX13R6nzw\",\n\t\"role\": \"NONE\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/nym",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"nym"
+									]
+								},
+								"description": "Similar to \"Assign Trust Anchor\" except that the role is \"NONE\". Use this to write a new user's/wallet's ownDid and verkey on the ledger. This MUST be done before any communication with messages can happen."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Schema Management",
+					"item": [
+						{
+							"name": "Create Schema",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"sample_schema\",\n    \"version\": \"1.0\",\n    \"attrNames\": [\n        \"given_name@string\",\n        \"address@string\",\n        \"birth_date@date\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/indyschema",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"indyschema"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List all Schemas",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/indyschema",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"indyschema"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Info",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "61235dbf-9384-405a-91fd-0b5f4e06a7f4",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e5fa84f6-17c1-44df-af3e-2b538f22b4f9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Establish connections",
+					"item": [
+						{
+							"name": "Create connection offer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"meta\": {\n\t\t\"username\": \"jesse\"\n\t},\n\t\"data\": {\n\t\t\"app\": \"<your-app-or-service-name>\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/connectionoffer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"connectionoffer"
+									]
+								},
+								"description": "Create a connection offer, the message: { \"id\": \"..\", ... } object in the reply is supposed to be shared with the invitee."
+							},
+							"response": []
+						},
+						{
+							"name": "List connection requests",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/connectionrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"connectionrequest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Accept connection request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"connectionRequestId\": \"5c40a2dcf918650016f7f102\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/connectionresponse",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"connectionresponse"
+									]
+								},
+								"description": "Accept a connection request. Connection request which reference a connection offer are automatically accepted so this only applies to initial connection request with no prior offer."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Send Credentials to User",
+					"item": [
+						{
+							"name": "Create credential definition",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"schemaId\": \"Gc3HWtzjBuaGyMkSHgomzx:2:sample_schema:1.0\",\n\t\"tag\": \"jesse-credential-def2\",\n\t\"supportRevocation\": false\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credentialdef",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credentialdef"
+									]
+								},
+								"description": "This may take a while.. :)"
+							},
+							"response": []
+						},
+						{
+							"name": "List credential definitions",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credentialdef",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credentialdef"
+									]
+								},
+								"description": "This may take a while.. :)"
+							},
+							"response": []
+						},
+						{
+							"name": "Send Credential offer to User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"recipientDid\": \"AgqzA1mwf7YEvCMJ59g5jb\",\n\t\"credDefId\": \"Gc3HWtzjBuaGyMkSHgomzx:3:CL:15:jesse-credential-def2\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credentialoffer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credentialoffer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List credential requests",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credentialrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credentialrequest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Accept credential request and send credential",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{issuer_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"credentialRequestId\": \"5c42f7dae1b0cc00174dc0bb\",\n\t\"values\": {\n\t\t\"given_name@string\": \"Jesse Digital\",\n        \"address@string\": \"Digitalstreet 0101\",\n        \"birth_date@date\": \"1998-01-19\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credential",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credential"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7b4777a8-2916-40a7-ae34-3c7a60758e3c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "34a0abec-c5a5-488f-8996-d879dc77753a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "prover",
+			"item": [
+				{
+					"name": "User and Wallet Management",
+					"item": [
+						{
+							"name": "Regsiter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"jesse\",\n  \"password\": \"test123test\",\n  \"wallet\": {\n    \"name\": \"jesse-wallet\",\n    \"credentials\": { \"key\" : \"testkey\" }\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "0cb5af9d-8f97-4f5b-9372-d5ca03abde3b",
+										"exec": [
+											"pm.globals.unset(\"variable_key\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"jesse\",\n    \"password\": \"test123test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Info",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Current Wallet",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/wallet/default",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"wallet",
+										"default"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Establish connections",
+					"item": [
+						{
+							"name": "Accept connection offer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"connectionOffer\": {\n        \"id\": \"7713620115131149612182247\",\n        \"type\": \"urn:sovrin:agent:message_type:sovrin.org/connection_offer\",\n        \"message\": {\n            \"did\": \"Gc3HWtzjBuaGyMkSHgomzx\",\n            \"verkey\": \"9WH5c1CyVgwSFB2xbEDnX7t8BNfFfPx5FnyeHcFmWXqU\",\n            \"endpoint\": \"http://172.16.0.100:8000/indy\",\n            \"nonce\": \"7713620115131149612182247\",\n            \"data\": {\n                \"app\": \"<your-app-or-service-name>\"\n            }\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/connectionrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"connectionrequest"
+									]
+								},
+								"description": "This can be used to accept a connection offer and send a connection request."
+							},
+							"response": []
+						},
+						{
+							"name": "Send initial connection request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{prover_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"theirDid\": \"Gc3HWtzjBuaGyMkSHgomzx\",\n    \"theirVk\": \"9WH5c1CyVgwSFB2xbEDnX7t8BNfFfPx5FnyeHcFmWXqU\",\n    \"theirEndpoint\": \"http://10.16.0.100:8000/indy\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/connectionrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"connectionrequest"
+									]
+								},
+								"description": "This can be used to send an initial connection request without a previous connection offer if the recipient's information is well-known."
+							},
+							"response": []
+						},
+						{
+							"name": "List (pairwise) connections of a wallet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/wallet/default/connection",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"wallet",
+										"default",
+										"connection"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Obtain credentials",
+					"item": [
+						{
+							"name": "List credential offers",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{prover_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credentialoffer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credentialoffer"
+									]
+								},
+								"description": "This can be used to send an initial connection request without a previous connection offer if the recipient's information is well-known."
+							},
+							"response": []
+						},
+						{
+							"name": "Accept credential offer and send credential request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"credentialOfferId\": \"5c42f79ae1b0cc00174dc0b9\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/credentialrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"credentialrequest"
+									]
+								},
+								"description": "This can be used to send an initial connection request without a previous connection offer if the recipient's information is well-known."
+							},
+							"response": []
+						},
+						{
+							"name": "List credentials stored in wallet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/wallet/default/credential",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"wallet",
+										"default",
+										"credential"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Prove credentials",
+					"item": [
+						{
+							"name": "List proof requests",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{prover_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/proofrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"proofrequest"
+									]
+								},
+								"description": "List received proof requests."
+							},
+							"response": []
+						},
+						{
+							"name": "Accept proof request and create and send proof",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{prover_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"proofRequestId\": \"5c42fe26e1b0cc00174dc0c9\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/proof",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"proof"
+									]
+								},
+								"description": "Accept a proof request, create and send proof."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "verifier",
+			"item": [
+				{
+					"name": "User and Wallet Management Copy",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"verifier\",\n  \"password\": \"test123test\",\n  \"wallet\": {\n    \"name\": \"verifier-wallet\",\n    \"credentials\": { \"key\" : \"testkey\" }\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"verifier\",\n    \"password\": \"test123test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Info",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{verifier_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Current Wallet",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{verifier_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/wallet/default",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"wallet",
+										"default"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Establish connections",
+					"item": [
+						{
+							"name": "Create connection offer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{verifier_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"meta\": {\n\t\t\"username\": \"jesse\"\n\t},\n\t\"data\": {\n\t\t\"app\": \"<your-app-or-service-name>\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/connectionoffer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"connectionoffer"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Request for proof",
+					"item": [
+						{
+							"name": "Create proof request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{verifier_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"recipientDid\": \"Dp7BbEAyZbWexDzBCRKfqq\",\n\t\"proofRequest\": {\n\t\t\"name\": \"NameVerify\",\n\t\t\"version\": \"1.0\",\n\t\t\"requested_attributes\": {\n\t\t\t\"attr1_referent\": {\n\t\t\t\t\"name\": \"given_name@string\",\n\t\t\t\t\"restrictions\": [{ \"cred_def_id\": \"Gc3HWtzjBuaGyMkSHgomzx:3:CL:15:jesse-credential-def2\" }]\n\t\t\t}\n\t\t},\n\t\t\"requested_predicates\": { }\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/proofrequest",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"proofrequest"
+									]
+								},
+								"description": "The proof can be referenced and its status queried with the proofId."
+							},
+							"response": []
+						},
+						{
+							"name": "List all proofs",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{verifier_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/proof",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"proof"
+									]
+								},
+								"description": "Validity information here may not be accurate, retrieve the proof by id to get up-to-date information."
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve and verify proof",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{verifier_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/proof/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"proof",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5c42fe26e1b0cc00174dc0c7"
+										}
+									]
+								},
+								"description": "Retrieve a proof with information on whether it is/was valid at its timestamp."
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7b12a99f-3316-4093-8966-7f118b5864df",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b3c24f95-3927-4e47-8989-29cf7c35a2b2",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5bf56301-d0ba-4c40-a387-dd135830445e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "fafb5a2e-b90b-4897-930f-148316621def",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "a15eea95-33ae-46ee-872c-0a7ca10eddab",
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"id": "f06e6bd3-c4d5-4f58-9012-b8c5408e5af7",
+			"key": "steward_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "6fdec3dd-cf83-44fc-aab6-2c9343d5f57b",
+			"key": "issuer_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4f8c30ec-d23b-4d9c-9388-f64bcfb1b793",
+			"key": "prover_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "8366d9d7-e556-47ca-a443-3497eae65ba0",
+			"key": "verifier_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
