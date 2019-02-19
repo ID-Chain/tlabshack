@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c450e91a-81cc-4347-aa23-78231f06e521",
+		"_postman_id": "795347c3-eb90-492e-ae54-5dc948663b2d",
 		"name": "IDChain",
 		"description": "IdentityChain API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -169,6 +169,41 @@
 							"response": []
 						},
 						{
+							"name": "User Info",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/user/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Get Current Wallet",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -240,131 +275,6 @@
 								"description": "Similar to \"Assign Trust Anchor\" except that the role is \"NONE\". Use this to write a new user's/wallet's ownDid and verkey on the ledger. This MUST be done before any communication with messages can happen."
 							},
 							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Schema Management",
-					"item": [
-						{
-							"name": "Create Schema",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{issuer_token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"sample_schema\",\n    \"version\": \"1.0\",\n    \"attrNames\": [\n        \"given_name@string\",\n        \"address@string\",\n        \"birth_date@date\"\n    ]\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/indyschema",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"indyschema"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "List all Schemas",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{issuer_token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{base_url}}/api/indyschema",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"indyschema"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "User Info",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{issuer_token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{base_url}}/api/user/me",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"me"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "61235dbf-9384-405a-91fd-0b5f4e06a7f4",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "e5fa84f6-17c1-44df-af3e-2b538f22b4f9",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
 						}
 					],
 					"_postman_isSubFolder": true
@@ -483,8 +393,70 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Send Credentials to User",
+					"name": "Schema & Credential Definitions",
 					"item": [
+						{
+							"name": "Create Schema",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"sample_schema\",\n    \"version\": \"1.0\",\n    \"attrNames\": [\n        \"given_name@string\",\n        \"address@string\",\n        \"birth_date@date\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/indyschema",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"indyschema"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List all Schemas",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{issuer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/api/indyschema",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"indyschema"
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "Create credential definition",
 							"request": {
@@ -504,7 +476,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"schemaId\": \"Gc3HWtzjBuaGyMkSHgomzx:2:sample_schema:1.0\",\n\t\"tag\": \"jesse-credential-def2\",\n\t\"supportRevocation\": false\n}"
+									"raw": "{\n\t\"schemaId\": \"{{schema_id}}\",\n\t\"tag\": \"jesse-credential-def2\",\n\t\"supportRevocation\": false\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/api/credentialdef",
@@ -553,11 +525,38 @@
 										"api",
 										"credentialdef"
 									]
-								},
-								"description": "This may take a while.. :)"
+								}
 							},
 							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "61235dbf-9384-405a-91fd-0b5f4e06a7f4",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e5fa84f6-17c1-44df-af3e-2b538f22b4f9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Issue Credentials",
+					"item": [
 						{
 							"name": "Send Credential offer to User",
 							"request": {
@@ -577,7 +576,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"recipientDid\": \"AgqzA1mwf7YEvCMJ59g5jb\",\n\t\"credDefId\": \"Gc3HWtzjBuaGyMkSHgomzx:3:CL:15:jesse-credential-def2\"\n}"
+									"raw": "{\n\t\"recipientDid\": \"{{prover_issuer_pairwise_did}}\",\n\t\"credDefId\": \"{{cred_def_id}}\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/api/credentialoffer",
@@ -664,6 +663,28 @@
 							"response": []
 						}
 					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "05e44a88-2fce-40ba-93f3-8f11743ddddd",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "471bb4bc-61ff-4bae-a675-be8e9f7e0dff",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
 					"_postman_isSubFolder": true
 				}
 			],
@@ -697,7 +718,7 @@
 					"name": "User and Wallet Management",
 					"item": [
 						{
-							"name": "Regsiter",
+							"name": "Register",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -733,7 +754,7 @@
 									"script": {
 										"id": "0cb5af9d-8f97-4f5b-9372-d5ca03abde3b",
 										"exec": [
-											"pm.globals.unset(\"variable_key\");"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -993,8 +1014,7 @@
 										"api",
 										"credentialoffer"
 									]
-								},
-								"description": "This can be used to send an initial connection request without a previous connection offer if the recipient's information is well-known."
+								}
 							},
 							"response": []
 						},
@@ -1028,8 +1048,7 @@
 										"api",
 										"credentialrequest"
 									]
-								},
-								"description": "This can be used to send an initial connection request without a previous connection offer if the recipient's information is well-known."
+								}
 							},
 							"response": []
 						},
@@ -1160,7 +1179,7 @@
 			"name": "verifier",
 			"item": [
 				{
-					"name": "User and Wallet Management Copy",
+					"name": "User and Wallet Management",
 					"item": [
 						{
 							"name": "Register",
@@ -1291,6 +1310,28 @@
 							"response": []
 						}
 					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d7c9ca2d-f275-40c9-8490-0f06a0569a9b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "279ef257-d905-48a3-9475-d2d03fef545b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1355,7 +1396,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"recipientDid\": \"Dp7BbEAyZbWexDzBCRKfqq\",\n\t\"proofRequest\": {\n\t\t\"name\": \"NameVerify\",\n\t\t\"version\": \"1.0\",\n\t\t\"requested_attributes\": {\n\t\t\t\"attr1_referent\": {\n\t\t\t\t\"name\": \"given_name@string\",\n\t\t\t\t\"restrictions\": [{ \"cred_def_id\": \"Gc3HWtzjBuaGyMkSHgomzx:3:CL:15:jesse-credential-def2\" }]\n\t\t\t}\n\t\t},\n\t\t\"requested_predicates\": { }\n\t}\n}"
+									"raw": "{\n\t\"recipientDid\": \"{{prover_verifier_pairwise_did}}\",\n\t\"proofRequest\": {\n\t\t\"name\": \"NameVerify\",\n\t\t\"version\": \"1.0\",\n\t\t\"requested_attributes\": {\n\t\t\t\"attr1_referent\": {\n\t\t\t\t\"name\": \"given_name@string\",\n\t\t\t\t\"restrictions\": [{ \"cred_def_id\": \"{{cred_def_id}}\" }]\n\t\t\t}\n\t\t},\n\t\t\"requested_predicates\": { }\n\t}\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/api/proofrequest",
